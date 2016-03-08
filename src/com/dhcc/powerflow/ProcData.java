@@ -15,6 +15,9 @@ public class ProcData {
 	private MPC _mpc;
 	private PROCD _procd;
 	private double[][] _bp,_bpp;
+	private int REF = 3;
+	private int PQ = 1;
+	private int PV =2;
 	
 	public void ReadData(String filename) {
 		
@@ -71,7 +74,31 @@ public class ProcData {
 		return;
 	}
 	
+	public void BusTypes() {
+		//ref pv pq
+		double[][] m_gen = _mpc.getGen();
+		double[][] m_bus = _mpc.getBus();
+		int[] m_pv = new int[m_bus.length];
+		int[] m_pq = new int[m_bus.length];
+		int m_pv_len = 0,m_pq_len = 0;
+		//TODO gen status<=0
+		for(int i=0; i<m_gen.length; ++i) {
+			if (m_gen[i][7]>0) {
+				if ((int) m_bus[(int) m_gen[i][0]][1] == REF)
+					_procd.setRef((int) m_gen[i][0]);
+				else if ((int) m_bus[(int) m_gen[i][0]][1] == PV)
+					m_pv[m_pv_len++]=(int) m_gen[i][0];
+				else 
+					m_pq[m_pq_len++]=(int) m_gen[i][0];
+			}else
+				m_pq[m_pq_len++]=(int) m_gen[i][0];
+		}
+		_procd.setPq(m_pq);
+		_procd.setPv(m_pv);
+	}
+	
 	public void InitData() {
+		
 		return;
 	}
 	
