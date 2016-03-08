@@ -38,17 +38,4 @@ public class MatrixUtil {
 		return invB;
 	}
 	
-	/*
-	public static void main(String[] args) {
-		double[][] B = {{4,0,0},{0,5,0},{0,0,1}};
-		double[][] invB = Inverse(B);
-		int n = invB.length;
-		for (int i=0; i<n; ++i) {
-			for (int j=0; j<n; ++j) {
-				System.out.print(invB[i][j] + " ");
-			}
-			System.out.println();
-		}
-	}
-	*/
 }
