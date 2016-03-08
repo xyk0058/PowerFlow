@@ -5,7 +5,7 @@ public class MPC {
 	private double[][] branch = null;
 	private double[][] gen = null;
 	
-	MPC (int nbus, int nbranch, int ngen) {
+	public MPC (int nbus, int ngen, int nbranch) {
 		setBus(new double[nbus+1][14]);
 		setBranch(new double[nbranch][14]);
 		setGen(new double[ngen][22]);
