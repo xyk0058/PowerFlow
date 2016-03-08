@@ -1,96 +1,95 @@
 package com.dhcc.model;
 
-public class Bus {
-	private int fbus;
-	private int tbus;
-	private double r;
-	private double x;
-	private double b;
-	private double rateA;
-	private double rateB;
-	private double rateC;
-	private double ratio;
-	private double angle;
-	private double status;
-	private double angmin;
-	private double angmax;
-	public int getFbus() {
-		return fbus;
+public class Branch {
+	private int bus_i;
+	private int type;
+	private double Pd;
+	private double Qd;
+	private double Gs;
+	private double Bs;
+	private double area;
+	private double Vm;
+	public int getBus_i() {
+		return bus_i;
 	}
-	public void setFbus(int fbus) {
-		this.fbus = fbus;
+	public void setBus_i(int bus_i) {
+		this.bus_i = bus_i;
 	}
-	public int getTbus() {
-		return tbus;
+	public int getType() {
+		return type;
 	}
-	public void setTbus(int tbus) {
-		this.tbus = tbus;
+	public void setType(int type) {
+		this.type = type;
 	}
-	public double getR() {
-		return r;
+	public double getPd() {
+		return Pd;
 	}
-	public void setR(double r) {
-		this.r = r;
+	public void setPd(double pd) {
+		Pd = pd;
 	}
-	public double getX() {
-		return x;
+	public double getQd() {
+		return Qd;
 	}
-	public void setX(double x) {
-		this.x = x;
+	public void setQd(double qd) {
+		Qd = qd;
 	}
-	public double getB() {
-		return b;
+	public double getGs() {
+		return Gs;
 	}
-	public void setB(double b) {
-		this.b = b;
+	public void setGs(double gs) {
+		Gs = gs;
 	}
-	public double getRateA() {
-		return rateA;
+	public double getBs() {
+		return Bs;
 	}
-	public void setRateA(double rateA) {
-		this.rateA = rateA;
+	public void setBs(double bs) {
+		Bs = bs;
 	}
-	public double getRateB() {
-		return rateB;
+	public double getArea() {
+		return area;
 	}
-	public void setRateB(double rateB) {
-		this.rateB = rateB;
+	public void setArea(double area) {
+		this.area = area;
 	}
-	public double getRateC() {
-		return rateC;
+	public double getVm() {
+		return Vm;
 	}
-	public void setRateC(double rateC) {
-		this.rateC = rateC;
+	public void setVm(double vm) {
+		Vm = vm;
 	}
-	public double getRatio() {
-		return ratio;
+	public double getVa() {
+		return Va;
 	}
-	public void setRatio(double ratio) {
-		this.ratio = ratio;
+	public void setVa(double va) {
+		Va = va;
 	}
-	public double getAngle() {
-		return angle;
+	public double getBaseKV() {
+		return baseKV;
 	}
-	public void setAngle(double angle) {
-		this.angle = angle;
+	public void setBaseKV(double baseKV) {
+		this.baseKV = baseKV;
 	}
-	public double getStatus() {
-		return status;
+	public double getZone() {
+		return zone;
 	}
-	public void setStatus(double status) {
-		this.status = status;
+	public void setZone(double zone) {
+		this.zone = zone;
 	}
-	public double getAngmin() {
-		return angmin;
+	public double getVmax() {
+		return Vmax;
 	}
-	public void setAngmin(double angmin) {
-		this.angmin = angmin;
+	public void setVmax(double vmax) {
+		Vmax = vmax;
 	}
-	public double getAngmax() {
-		return angmax;
+	public double getVmin() {
+		return Vmin;
 	}
-	public void setAngmax(double angmax) {
-		this.angmax = angmax;
+	public void setVmin(double vmin) {
+		Vmin = vmin;
 	}
-
+	private double Va;
+	private double baseKV;
+	private double zone;
+	private double Vmax;
+	private double Vmin;
 }
