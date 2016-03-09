@@ -20,7 +20,7 @@ public class PowerFlow {
 		double[][] invBp, invBpp;
 		
 		//初始化迭代参数
-		for (int i=0; i<n; ++i) {
+		for (int i=0; i<n-1; ++i) {
 			U[i] = Us[2*i];
 			F[i] = Us[2*i+1];
 		}
@@ -53,7 +53,7 @@ public class PowerFlow {
 		
 		double deltaPQU; 
 		int k = 0;
-		while (true) {
+		while (k < 100) {
 			k++;
 			for(int i=0; i<n-1; ++i)
 			{
@@ -94,10 +94,10 @@ public class PowerFlow {
 	            for (int i=0;i<n_PQ;i++) U[i]+=deltaU[i];      //修正Ui
 //	            System.out.println("\r\n" + k + "U:");
 //	            for (int i=0; i<n-1; ++i) System.out.print(deltaU[i] + " ");
-	            //System.out.println("U:");
-//	    		for (int i=0; i<n; ++i) {
-//	    			System.out.print(U[i] + " ");
-//	    		}
+	            System.out.println();
+	    		for (int i=0; i<n; ++i) {
+	    			System.out.print(nf.format(U[i]) + "    ");
+	    		}
 //	    		System.out.println();
 			}
 		}
