@@ -75,6 +75,61 @@ public class ProcData2 {
 		return;
 	}
 	
+	public double[][] getYG(int n_Bus) {
+		double[][] G = new double[n_Bus][n_Bus];
+		for (int i=0; i<n_Bus; ++i) {
+			for (int j=0; j<n_Bus; ++j) {
+				G[i][j] = 0;
+			}
+		}
+		double[][] branch = _mpc.getBranch();
+		for (int i=0; i<n_Bus; ++i) {
+			if(branch[i][0] != branch[i][1])      //左节点号与右节点号不同
+	        {
+	            double Z2 = (branch[i][2])*(branch[i][2])+(branch[i][3])*(branch[i][3]);   //阻抗的平方
+	            //串联阻抗等效导纳值
+	            //非对角元素
+	            G[(int) branch[i][0]][(int) branch[i][1]] = (-branch[i][2])/Z2;
+	            G[(int) branch[i][1]][(int) branch[i][0]] = (-branch[i][2])/Z2;
+	            //对角元素
+	            G[(int) branch[i][0]][(int) branch[i][0]] += branch[i][2]/Z2;
+	            G[(int) branch[i][1]][(int) branch[i][1]] += branch[i][2]/Z2;
+	        }
+		}
+		return G;
+	}
+	
+	public double[][] getYB(int n_Bus) {
+		double[][] B = new double[n_Bus][n_Bus];
+		for (int i=0; i<n_Bus; ++i) {
+			for (int j=0; j<n_Bus; ++j) {
+				B[i][j] = 0;
+			}
+		}
+		double[][] branch = _mpc.getBranch();
+		for (int i=0; i<n_Bus; ++i) {
+			if(branch[i][0] != branch[i][1])      //左节点号与右节点号不同
+	        {
+	            double Z2 = (branch[i][2])*(branch[i][2])+(branch[i][3])*(branch[i][3]);   //阻抗的平方
+	          //串联阻抗等效导纳值
+	            //非对角元素
+	            B[(int) branch[i][0]][(int) branch[i][1]] = branch[i][3]/Z2;
+	            B[(int) branch[i][1]][(int) branch[i][0]] = branch[i][3]/Z2;
+	            //对角元素
+	            B[(int) branch[i][0]][(int) branch[i][0]] += (-branch[i][3]/Z2);
+	            B[(int) branch[i][1]][(int) branch[i][1]] += (-branch[i][3]/Z2);
+	            //节点自导纳需加上充电导纳值
+	            B[(int) branch[i][0]][(int) branch[i][0]] += branch[i][4]/2.0;
+	            B[(int) branch[i][1]][(int) branch[i][1]] += branch[i][4]/2.0;
+	        }
+	        else           //左节点号=右节点号，即节点有并联阻抗的情况
+	        {
+	            B[(int) branch[i][0]][(int) branch[i][0]] += branch[i][3];
+	        }
+		}
+		return B;
+	}
+	
 	public void ProcData(){
 		double[][] m_bus = _mpc.getBus();
 		double[][] m_gen = _mpc.getGen();
@@ -142,5 +197,7 @@ public class ProcData2 {
 		
 		
 	}
-
+	
+	
+	
 }
