@@ -82,7 +82,7 @@ public class ProcData2 {
 		//节点电压赋初值，PV节点电压幅值已知，相角置0；
 		//平衡节点电压幅值和相角均已知；
 		//PQ节点电压幅值设1，相角设0.
-		double[] Us = new double[3*N];
+		double[] Us = new double[2*N];
 		//各节点有功负荷赋值
 		double[] Pl = new double[N-1];
 		//PV节点发电机有功赋初值（除平衡节点外）
@@ -98,21 +98,21 @@ public class ProcData2 {
 					break;
 				}
 				index[_ref] = (int)m_bus[i][0];
-				Us[3*_ref] = m_bus[i][7];
-				Us[3*_ref+1] = 0;
+				Us[2*_ref] = m_bus[i][7];
+				Us[2*_ref+1] = 0;
 				++_ref;
 			}else if ((int)m_bus[i][1] == PQ) {
 				index[_pq] = (int)m_bus[i][0];
-				Us[3*_pq] = 1;
-				Us[3*_pq+1] = 0;
+				Us[2*_pq] = 1;
+				Us[2*_pq+1] = 0;
 				Pl[_pq] = 0;
 				Ps[_pq] = 0;
 				Qs[_pq] = 0;
 				++_pq;
 			}else if ((int)m_bus[i][1] == PV) {
 				index[_pv] = (int)m_bus[i][0];
-				Us[3*_pv] = 1;
-				Us[3*_pv+1] = 0;
+				Us[2*_pv] = 1;
+				Us[2*_pv+1] = 0;
 				Pl[_pv] = m_bus[i][2];
 				for (int j=0; j<Ngen; ++j) {
 					if ((int)m_bus[i][0] == m_gen[j][0]) {
