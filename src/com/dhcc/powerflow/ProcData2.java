@@ -175,12 +175,12 @@ public class ProcData2 {
 			_mpc.setGen(gen);
 			
 			double[][] m_bus = _mpc.getBus();
-			System.out.println("Test:");
-			for (int i=0; i<m_bus.length; ++i){
-				for (int j=0; j<m_bus[i].length; ++j)
-					System.out.print(m_bus[i][j]);
-				System.out.println();
-			}
+//			System.out.println("Test:");
+//			for (int i=0; i<m_bus.length; ++i){
+//				for (int j=0; j<m_bus[i].length; ++j)
+//					System.out.print(m_bus[i][j]);
+//				System.out.println();
+//			}
 			
 			br.close();
 			instrr.close();
@@ -206,6 +206,7 @@ public class ProcData2 {
 			if(branch[i][0] != branch[i][1])      //左节点号与右节点号不同
 	        {
 	            double Z2 = (branch[i][2])*(branch[i][2])+(branch[i][3])*(branch[i][3]);   //阻抗的平方
+	            //System.out.println("Z2" + Z2);
 	            //串联阻抗等效导纳值
 	            //非对角元素
 	            G[(int) branch[i][0]][(int) branch[i][1]] = (-branch[i][2])/Z2;
@@ -215,6 +216,7 @@ public class ProcData2 {
 	            G[(int) branch[i][1]][(int) branch[i][1]] += branch[i][2]/Z2;
 	        }
 		}
+		 
 		return G;
 	}
 	
@@ -231,7 +233,7 @@ public class ProcData2 {
 			if(branch[i][0] != branch[i][1])      //左节点号与右节点号不同
 	        {
 	            double Z2 = (branch[i][2])*(branch[i][2])+(branch[i][3])*(branch[i][3]);   //阻抗的平方
-	            System.out.println(Z2);
+	            System.out.println("Z2:" + Z2);
 	            //串联阻抗等效导纳值
 	            //非对角元素
 	            B[(int) branch[i][0]][(int) branch[i][1]] = branch[i][3]/Z2;
@@ -247,6 +249,13 @@ public class ProcData2 {
 	        {
 	            B[(int) branch[i][0]][(int) branch[i][0]] += branch[i][3];
 	        }
+		}
+		System.out.println("B:");
+		for (int i=0; i<n_Bus; ++i) {
+			for (int j=0; j<n_Bus; ++j) {
+				System.out.print(B[i][j] + " ");
+			}
+			System.out.println();
 		}
 		return B;
 	}
