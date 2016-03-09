@@ -17,6 +17,10 @@ public class ProcData2 {
 	private int PQ = 1;
 	private int PV =2;
 	
+	public MPC get_mpc() {
+		return _mpc;
+	}
+
 	private double[] Us={1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,
 			1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,
 			1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0000,0,1.0500,0
@@ -135,6 +139,8 @@ public class ProcData2 {
 			
 			_mpc = new MPC(nbus, ngen, nbranch);
 			
+//			System.out.println("Three" + nbus + ngen + nbranch);
+			
 			double[][] bus = _mpc.getBus();
 			//System.out.println("lanlan");
 			for (int i=0; i<nbus; ++i) {
@@ -152,20 +158,29 @@ public class ProcData2 {
 					gen[i][j] = Double.parseDouble(rowdata[j]);
 				}
 			}
-			double[][] branch = _mpc.getBus();
+			double[][] branch = _mpc.getBranch();
 			for (int i=0; i<nbranch; ++i) {
 				row = br.readLine();
 				rowdata = row.split(",");
 
-				System.out.println(row);
+				//System.out.println(row);
 				for (int j=0; j<rowdata.length; ++j) {
 					branch[i][j] = Double.parseDouble(rowdata[j]);
 				}
 			}
 			
+			
 			_mpc.setBus(bus);
 			_mpc.setBranch(branch);
 			_mpc.setGen(gen);
+			
+			double[][] m_bus = _mpc.getBus();
+			System.out.println("Test:");
+			for (int i=0; i<m_bus.length; ++i){
+				for (int j=0; j<m_bus[i].length; ++j)
+					System.out.print(m_bus[i][j]);
+				System.out.println();
+			}
 			
 			br.close();
 			instrr.close();
@@ -210,6 +225,7 @@ public class ProcData2 {
 				B[i][j] = 0;
 			}
 		}
+		
 		double[][] branch = _mpc.getBranch();
 		for (int i=0; i<n_Bus; ++i) {
 			if(branch[i][0] != branch[i][1])      //左节点号与右节点号不同
@@ -238,11 +254,13 @@ public class ProcData2 {
 	public void ProcData(){
 		double[][] m_bus = _mpc.getBus();
 		double[][] m_gen = _mpc.getGen();
+		
 //		for (int i=0; i<m_bus.length; ++i){
 //			for (int j=0; j<m_bus[i].length; ++j)
 //				System.out.print(m_bus[i][j]);
 //			System.out.println();
 //		}
+		
 		int[] index = new int[N];
 		//节点电压赋初值，PV节点电压幅值已知，相角置0；
 		//平衡节点电压幅值和相角均已知；
@@ -314,7 +332,7 @@ public class ProcData2 {
 	
 	public static void main(String[] args) {
 		ProcData2 pd2 = new ProcData2();
-		pd2.ReadData("D://PowerFlow//src//com//dhcc//data//case14.txt");
+		pd2.ReadData("/Users/xyk0058/Git/PowerFlow/src/com/dhcc/data/case14.txt");
 		
 		pd2.ProcData();
 	}
