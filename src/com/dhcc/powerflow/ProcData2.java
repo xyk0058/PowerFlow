@@ -233,7 +233,7 @@ public class ProcData2 {
 			if(branch[i][0] != branch[i][1])      //左节点号与右节点号不同
 	        {
 	            double Z2 = (branch[i][2])*(branch[i][2])+(branch[i][3])*(branch[i][3]);   //阻抗的平方
-	            System.out.println("Z2:" + Z2);
+	            //System.out.println("Z2:" + Z2);
 	            //串联阻抗等效导纳值
 	            //非对角元素
 	            B[(int) branch[i][0]][(int) branch[i][1]] = branch[i][3]/Z2;
@@ -250,13 +250,13 @@ public class ProcData2 {
 	            B[(int) branch[i][0]][(int) branch[i][0]] += branch[i][3];
 	        }
 		}
-		System.out.println("B:");
-		for (int i=0; i<n_Bus; ++i) {
-			for (int j=0; j<n_Bus; ++j) {
-				System.out.print(B[i][j] + " ");
-			}
-			System.out.println();
-		}
+//		System.out.println("B:");
+//		for (int i=0; i<n_Bus; ++i) {
+//			for (int j=0; j<n_Bus; ++j) {
+//				System.out.print(B[i][j] + " ");
+//			}
+//			System.out.println();
+//		}
 		return B;
 	}
 	
@@ -329,30 +329,30 @@ public class ProcData2 {
 				break;
 			}
 		}
-		System.out.println("Test lanlan US: " +Us.length);
-		for (int i=0; i<Us.length; ++i){
-				System.out.print(Us[i]+" ");
-		}
-		System.out.println("\nTest lanlan PL: " +Pl.length);
-		for (int i=0; i<Pl.length; ++i){
-				System.out.print(Pl[i]+" ");
-		}
-		System.out.println("\nTest lanlan QL: " +Ql.length);
-		for (int i=0; i<Ql.length; ++i){
-				System.out.print(Ql[i]+" ");
-		}
-		System.out.println("\nTest lanlan PS: " +Ps.length);
-		for (int i=0; i<Ps.length; ++i){
-				System.out.print(Ps[i]+" ");
-		}
-		System.out.println("\nTest lanlan QS: " +Qs.length);
-		for (int i=0; i<Qs.length; ++i){
-				System.out.print(Qs[i]+" ");
-		}
-		System.out.println("\nTest lanlan index: " +index.length);
-		for (int i=0; i<index.length; ++i){
-				System.out.print(index[i]+" ");
-		}
+//		System.out.println("Test lanlan US: " +Us.length);
+//		for (int i=0; i<Us.length; ++i){
+//				System.out.print(Us[i]+" ");
+//		}
+//		System.out.println("\nTest lanlan PL: " +Pl.length);
+//		for (int i=0; i<Pl.length; ++i){
+//				System.out.print(Pl[i]+" ");
+//		}
+//		System.out.println("\nTest lanlan QL: " +Ql.length);
+//		for (int i=0; i<Ql.length; ++i){
+//				System.out.print(Ql[i]+" ");
+//		}
+//		System.out.println("\nTest lanlan PS: " +Ps.length);
+//		for (int i=0; i<Ps.length; ++i){
+//				System.out.print(Ps[i]+" ");
+//		}
+//		System.out.println("\nTest lanlan QS: " +Qs.length);
+//		for (int i=0; i<Qs.length; ++i){
+//				System.out.print(Qs[i]+" ");
+//		}
+//		System.out.println("\nTest lanlan index: " +index.length);
+//		for (int i=0; i<index.length; ++i){
+//				System.out.print(index[i]+" ");
+//		}
 		//阻抗参数
 		//double[][] G = new double[N][N];
 		//double[][] B = new double[N][N];

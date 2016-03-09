@@ -1,13 +1,16 @@
 package com.dhcc.powerflow;
 
+import java.text.NumberFormat;
+
 import com.dhcc.util.MatrixUtil;
 
 public class PowerFlow {
 	
-	public static void PQiterating(int n_PQ, int n_Bus, double[][] G, double[][] B, double[] Ps, double[] PL,double[] Qs, double[] QL, double eps) {
+	public static void PQiterating(int n_PQ, int n_Bus, double[][] G, double[][] B, 
+			double[] Ps, double[] PL,double[] Qs, double[] QL, double[] Us, double eps) {
 		int n = n_Bus;
-		double[][] Bp = new double[n][n];
-		double[][] Bpp = new double[n][n];
+		double[][] Bp = new double[n-1][n-1];
+		double[][] Bpp = new double[n_PQ][n_PQ];
 		double[] deltaP = new double[n];
 		double[] deltaQ = new double[n_PQ];
 		double[] U = new double[n];
@@ -18,33 +21,38 @@ public class PowerFlow {
 		
 		//初始化迭代参数
 		for (int i=0; i<n; ++i) {
-			U[i] = 1.0;
-			F[i] = 0.0;
+			U[i] = Us[2*i];
+			F[i] = Us[2*i+1];
 		}
 		
 		for (int i=0; i<n-1; ++i) {
 	        for (int j=0; j<n-1; ++j) {
 	            Bp[i][j] = B[i][j];
 	            if (i<n_PQ && j<n_PQ) {
-	                Bpp[i][j]=B[i][j];
+	                Bpp[i][j] = B[i][j];
 	            }
 	        }
 		}
 		
+		
+		
 		//求B'和B''矩阵的逆矩阵
 		invBp = MatrixUtil.Inverse(Bp);
 		invBpp = MatrixUtil.Inverse(Bpp);
-		//
-		System.out.println("Bp");
-		for (int i=0; i<n-1; ++i) {
-			for(int j=0; j<n-1; ++j)
-				System.out.print(Bp[i][j] + " ");
-			System.out.println();
-		}
+		
+//		System.out.println("B");
+//		NumberFormat nf = NumberFormat.getInstance();
+//		nf.setMinimumFractionDigits(6);
+//		nf.setMaximumFractionDigits(6);
+//		for (int i=0; i<n; ++i) {
+//			for(int j=0; j<n; ++j)
+//				System.out.print(nf.format(B[i][j]) + " ");
+//			System.out.println();
+//		}
 		
 		double deltaPQU; 
 		int k = 0;
-		while (k < 40) {
+		while (k < 100) {
 			k++;
 			for(int i=0; i<n-1; ++i)
 			{
@@ -62,38 +70,47 @@ public class PowerFlow {
 			deltaPQU = 0;
 			for (int i=0; i<n; ++i) {
 				deltaPQU = Math.max(Math.abs(deltaP[i]), deltaPQU);
-				if(i < n_PQ) deltaPQU = Math.max(Math.abs(deltaQ[i]), deltaPQU);
+				if (i < n_PQ) deltaPQU = Math.max(Math.abs(deltaQ[i]), deltaPQU);
 			}
 			if (deltaPQU < eps) {
 				break;
 			} else {
 				//求P,δ修正值
-	            for(int i=0; i<n-1; ++i) deltaP[i] = deltaP[i] / U[i];        //△Pi/Vi
-	            for(int i=0; i<n-1; ++i) deltaF[i] = 0;        //△δ初值置0
-	            for(int i=0; i<n-1; ++i) {
+	            for (int i=0; i<n-1; ++i) deltaP[i] = deltaP[i] / U[i];        //△Pi/Vi
+	            for (int i=0; i<n-1; ++i) deltaF[i] = 0;        //△δ初值置0
+	            for (int i=0; i<n-1; ++i) {
 	                for(int j=0; j<n-1; ++j) deltaF[i] += (-invBp[i][j]) * deltaP[j];      //求Vi*△δi
 	                deltaF[i] = deltaF[i] / U[i];          //求△δ
 	            }
-	            for(int i=0;i<n-1;i++) F[i]+=deltaF[i];           //修正δi
+	            for (int i=0;i<n-1;i++) F[i]+=deltaF[i];           //修正δi
 	            
 	            //Q,U修正值
-	            for(int i=0; i<n_PQ; ++i) deltaQ[i] = deltaQ[i]/U[i];      //△Qi/Vi
-	            for(int i=0; i<n_PQ; ++i) deltaU[i]=0;               //dU初值置0
-	            for(int i=0; i<n_PQ; i++) {
+	            for (int i=0; i<n_PQ; ++i) deltaQ[i] = deltaQ[i]/U[i];      //△Qi/Vi
+	            for (int i=0; i<n_PQ; ++i) deltaU[i] = 0;               //dU初值置0
+	            for (int i=0; i<n_PQ; i++) {
 	                for(int j=0; j<n_PQ; ++j) deltaU[i]+=-invBpp[i][j]*deltaQ[j];
 	            }
-	            for(int i=0;i<n_PQ;i++) U[i]+=deltaU[i];      //修正Ui
+	            for (int i=0;i<n_PQ;i++) U[i]+=deltaU[i];      //修正Ui
+//	            System.out.println("\r\n" + k + "U:");
+//	            for (int i=0; i<n-1; ++i) System.out.print(deltaU[i] + " ");
+	            //System.out.println("U:");
+//	    		for (int i=0; i<n; ++i) {
+//	    			System.out.print(U[i] + " ");
+//	    		}
+//	    		System.out.println();
 			}
-			
 		}
-//		System.out.println("U:");
-//		for (int i=0; i<n; ++i) {
-//			System.out.println(U[i] + " ");
-//		}
-//		System.out.println("F:");
-//		for (int i=0; i<n; ++i) {
-//			System.out.println(F[i] + " ");
-//		}
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMinimumFractionDigits(4);
+		nf.setMaximumFractionDigits(4);
+		System.out.println("U:");
+		for (int i=0; i<n; ++i) {
+			System.out.print(nf.format(U[i]) + "    ");
+		}
+		System.out.println("\r\nF:");
+		for (int i=0; i<n; ++i) {
+			System.out.print(nf.format(F[i]) + "    ");
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -117,7 +134,8 @@ public class PowerFlow {
 //						{0,7.5,0,3.75,-11.25}};
 		ProcData2 pd2 = new ProcData2();
 		pd2.TestData();
-		PQiterating(24, 30, pd2.getYG(30), pd2.getYB(30), pd2.getPs(), pd2.getPl(), pd2.getQs(), pd2.getQl(), 0.000001);
+		int length = pd2.get_mpc().getBranch().length;
+		PQiterating(24, 30, pd2.getYG(length), pd2.getYB(length), pd2.getPs(), pd2.getPl(), pd2.getQs(), pd2.getQl(), pd2.getUs(), 0.00001);
 	}
 	
 }
