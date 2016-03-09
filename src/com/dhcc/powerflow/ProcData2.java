@@ -286,7 +286,7 @@ public class ProcData2 {
 
 		int _ref=N-1, _pq=0, _pv=N-2;
 		for (int i=0; i<N; ++i) {
-			System.out.println((int)m_bus[i][1]);
+			//System.out.println((int)m_bus[i][1]);
 			if ((int)m_bus[i][1] == REF) {
 				if (_ref>N-1) {
 					System.out.println("结点输入错误 ProcData REF");
@@ -301,18 +301,18 @@ public class ProcData2 {
 				Us[2*_pq] = 1;
 				Us[2*_pq+1] = 0;
 				Pl[_pq] = m_bus[i][2];
-				Ql[_pv] = m_bus[i][3];
+				Ql[_pq] = m_bus[i][3];
 				Ps[_pq] = 0;
 				Qs[_pq] = 0;
 				++_pq;
 			}else if ((int)m_bus[i][1] == PV) {
 				index[_pv] = (int)m_bus[i][0];
-				Us[2*_pv] = 1;
+				Us[2*_pv] = m_bus[i][7];
 				Us[2*_pv+1] = 0;
 				Pl[_pv] = m_bus[i][2];
 				Ql[_pv] = m_bus[i][3];
 				for (int j=0; j<Ngen; ++j) {
-					if ((int)m_bus[i][0] == m_gen[j][0]) {
+					if ((int)m_bus[i][0] == (int)m_gen[j][0]) {
 						Ps[_pv] = m_gen[j][1];
 						//Qs[_pv] = m_gen[j][2];
 						Qs[_pv] = 0;
@@ -324,12 +324,35 @@ public class ProcData2 {
 				System.out.println("结点输入错误 ProcData");
 				break;
 			}
-			if (_pq > _pv){
-				System.out.println("结点输入错误 ProcData PQ PV");
+			if (_pq > _pv+1){
+				System.out.println("结点输入错误 ProcData PQ " +_pq + "PV "+_pv);
 				break;
 			}
 		}
-		
+		System.out.println("Test lanlan US: " +Us.length);
+		for (int i=0; i<Us.length; ++i){
+				System.out.print(Us[i]+" ");
+		}
+		System.out.println("\nTest lanlan PL: " +Pl.length);
+		for (int i=0; i<Pl.length; ++i){
+				System.out.print(Pl[i]+" ");
+		}
+		System.out.println("\nTest lanlan QL: " +Ql.length);
+		for (int i=0; i<Ql.length; ++i){
+				System.out.print(Ql[i]+" ");
+		}
+		System.out.println("\nTest lanlan PS: " +Ps.length);
+		for (int i=0; i<Ps.length; ++i){
+				System.out.print(Ps[i]+" ");
+		}
+		System.out.println("\nTest lanlan QS: " +Qs.length);
+		for (int i=0; i<Qs.length; ++i){
+				System.out.print(Qs[i]+" ");
+		}
+		System.out.println("\nTest lanlan index: " +index.length);
+		for (int i=0; i<index.length; ++i){
+				System.out.print(index[i]+" ");
+		}
 		//阻抗参数
 		//double[][] G = new double[N][N];
 		//double[][] B = new double[N][N];
@@ -341,8 +364,8 @@ public class ProcData2 {
 	
 	public static void main(String[] args) {
 		ProcData2 pd2 = new ProcData2();
-		pd2.ReadData("/Users/xyk0058/Git/PowerFlow/src/com/dhcc/data/case14.txt");
-		
+		//pd2.ReadData("/Users/xyk0058/Git/PowerFlow/src/com/dhcc/data/case14.txt");
+		pd2.ReadData("D:/PowerFlow/src/com/dhcc/data/case14.txt");
 		pd2.ProcData();
 	}
 	
