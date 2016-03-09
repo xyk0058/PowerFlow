@@ -40,15 +40,17 @@ public class PowerFlow {
 		invBp = MatrixUtil.Inverse(Bp);
 		invBpp = MatrixUtil.Inverse(Bpp);
 		
-//		System.out.println("B");
-//		NumberFormat nf = NumberFormat.getInstance();
-//		nf.setMinimumFractionDigits(6);
-//		nf.setMaximumFractionDigits(6);
-//		for (int i=0; i<n; ++i) {
-//			for(int j=0; j<n; ++j)
-//				System.out.print(nf.format(B[i][j]) + " ");
-//			System.out.println();
-//		}
+		
+		System.out.println("B");
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMinimumFractionDigits(6);
+		nf.setMaximumFractionDigits(6);
+		for (int i=0; i<n_PQ; ++i) {
+			for(int j=0; j<n_PQ; ++j)
+				System.out.print(nf.format(invBpp[i][j]) + " ");
+			System.out.println();
+		}
+
 		
 		double deltaPQU; 
 		int k = 0;
@@ -68,7 +70,7 @@ public class PowerFlow {
 				}
 			}
 			deltaPQU = 0;
-			for (int i=0; i<n; ++i) {
+			for (int i=0; i<n-1; ++i) {
 				deltaPQU = Math.max(Math.abs(deltaP[i]), deltaPQU);
 				if (i < n_PQ) deltaPQU = Math.max(Math.abs(deltaQ[i]), deltaPQU);
 			}
@@ -88,7 +90,7 @@ public class PowerFlow {
 	            for (int i=0; i<n_PQ; ++i) deltaQ[i] = deltaQ[i]/U[i];      //△Qi/Vi
 	            for (int i=0; i<n_PQ; ++i) deltaU[i] = 0;               //dU初值置0
 	            for (int i=0; i<n_PQ; i++) {
-	                for(int j=0; j<n_PQ; ++j) deltaU[i]+=-invBpp[i][j]*deltaQ[j];
+	                for(int j=0; j<n_PQ; ++j) deltaU[i] += (-invBpp[i][j]) * deltaQ[j];
 	            }
 	            for (int i=0;i<n_PQ;i++) U[i]+=deltaU[i];      //修正Ui
 //	            System.out.println("\r\n" + k + "U:");
@@ -100,7 +102,7 @@ public class PowerFlow {
 //	    		System.out.println();
 			}
 		}
-		NumberFormat nf = NumberFormat.getInstance();
+
 		nf.setMinimumFractionDigits(4);
 		nf.setMaximumFractionDigits(4);
 		System.out.println("U:");
@@ -109,7 +111,7 @@ public class PowerFlow {
 		}
 		System.out.println("\r\nF:");
 		for (int i=0; i<n; ++i) {
-			System.out.print(nf.format(F[i]) + "    ");
+			System.out.print(nf.format(F[i]/3.1415926*180) + "    ");
 		}
 	}
 	
