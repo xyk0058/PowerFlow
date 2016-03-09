@@ -136,6 +136,7 @@ public class ProcData2 {
 			_mpc = new MPC(nbus, ngen, nbranch);
 			
 			double[][] bus = _mpc.getBus();
+			//System.out.println("lanlan");
 			for (int i=0; i<nbus; ++i) {
 				row = br.readLine();
 				rowdata = row.split(",");
@@ -155,6 +156,8 @@ public class ProcData2 {
 			for (int i=0; i<nbranch; ++i) {
 				row = br.readLine();
 				rowdata = row.split(",");
+
+				System.out.println(row);
 				for (int j=0; j<rowdata.length; ++j) {
 					branch[i][j] = Double.parseDouble(rowdata[j]);
 				}
@@ -212,7 +215,8 @@ public class ProcData2 {
 			if(branch[i][0] != branch[i][1])      //左节点号与右节点号不同
 	        {
 	            double Z2 = (branch[i][2])*(branch[i][2])+(branch[i][3])*(branch[i][3]);   //阻抗的平方
-	          //串联阻抗等效导纳值
+	            System.out.println(Z2);
+	            //串联阻抗等效导纳值
 	            //非对角元素
 	            B[(int) branch[i][0]][(int) branch[i][1]] = branch[i][3]/Z2;
 	            B[(int) branch[i][1]][(int) branch[i][0]] = branch[i][3]/Z2;
@@ -234,6 +238,11 @@ public class ProcData2 {
 	public void ProcData(){
 		double[][] m_bus = _mpc.getBus();
 		double[][] m_gen = _mpc.getGen();
+//		for (int i=0; i<m_bus.length; ++i){
+//			for (int j=0; j<m_bus[i].length; ++j)
+//				System.out.print(m_bus[i][j]);
+//			System.out.println();
+//		}
 		int[] index = new int[N];
 		//节点电压赋初值，PV节点电压幅值已知，相角置0；
 		//平衡节点电压幅值和相角均已知；
@@ -250,6 +259,7 @@ public class ProcData2 {
 
 		int _ref=N-1, _pq=0, _pv=N-2;
 		for (int i=0; i<N; ++i) {
+			System.out.println((int)m_bus[i][1]);
 			if ((int)m_bus[i][1] == REF) {
 				if (_ref>N-1) {
 					System.out.println("结点输入错误 ProcData REF");
@@ -302,6 +312,11 @@ public class ProcData2 {
 		//double[][] invB2 = new double[_pq][_pq];   	
 	}
 	
-	
+	public static void main(String[] args) {
+		ProcData2 pd2 = new ProcData2();
+		pd2.ReadData("D://PowerFlow//src//com//dhcc//data//case14.txt");
+		
+		pd2.ProcData();
+	}
 	
 }
