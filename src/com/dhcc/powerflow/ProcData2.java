@@ -29,12 +29,37 @@ public class ProcData2 {
 			  0.090,0.032,0.095,0.022,0.175,0.000,0.032,0.087,0.000,0.035,
 			  0.000,0.000,0.024,0.106,0.217,0.942,0.300,0.000,0.000
 			}; 
-	private double[] Qs={0}; 
+	private double[] Qs=new double[30];
 	private double[] Ql={0.012,0.016,0.000,0.109,0.000,0.020,0.075,0.016,0.025,0.018,
 			  0.058,0.009,0.034,0.007,0.112,0.000,0.016,0.067,0.000,0.023,
 			  0.000,0.000,0.009,0.019,0.127,0.190,0.300,0.000,0.000
 			}; 
 	
+	
+	public int getPQ() {
+		return PQ;
+	}
+
+	public double[] getUs() {
+		return Us;
+	}
+
+	public double[] getPs() {
+		return Ps;
+	}
+
+	public double[] getPl() {
+		return Pl;
+	}
+
+	public double[] getQs() {
+		return Qs;
+	}
+
+	public double[] getQl() {
+		return Ql;
+	}
+
 	public void TestData() {
 		double K1=1,K2=1,K3=1,K4=1;          //变压器当前变比
 		double Yc1=0,Yc2=0;
@@ -89,6 +114,7 @@ public class ProcData2 {
 			branch[i][4] *= 2;
 			branch[i][5] *= 2;
 		}
+		_mpc = new MPC(30, 10, 24);
 		_mpc.setBranch(branch);
 	}
 	

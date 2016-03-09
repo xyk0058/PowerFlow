@@ -6,7 +6,7 @@ public class PowerFlow {
 	
 	public static void PQiterating(int n_PQ, int n_Bus, double[][] G, double[][] B, double[] Ps, double[] PL,double[] Qs, double[] QL, double eps) {
 		int n = n_Bus;
-		double[][] Bp = new double[n_PQ][n_PQ];
+		double[][] Bp = new double[n][n];
 		double[][] Bpp = new double[n][n];
 		double[] deltaP = new double[n];
 		double[] deltaQ = new double[n_PQ];
@@ -35,9 +35,14 @@ public class PowerFlow {
 		invBp = MatrixUtil.Inverse(Bp);
 		invBpp = MatrixUtil.Inverse(Bpp);
 		//
+		
+		for (int i=0; i<n; ++i) {
+			System.out.println(F[i] + " ");
+		}
+		
 		double deltaPQU; 
 		int k = 0;
-		while (k < 1) {
+		while (k < 40) {
 			k++;
 			for(int i=0; i<n-1; ++i)
 			{
@@ -49,7 +54,7 @@ public class PowerFlow {
 				}
 				deltaP[i] = Ps[i] - PL[i] - U[i] * tmp1;      //计算△Pi
 				if(i < n_PQ) {
-					deltaQ[i]=Qs[i]-QL[i]-U[i] * tmp2;
+					deltaQ[i] = Qs[i] - QL[i] - U[i] * tmp2;
 				}
 			}
 			deltaPQU = 0;
@@ -73,33 +78,44 @@ public class PowerFlow {
 	            for(int i=0; i<n_PQ; ++i) deltaQ[i] = deltaQ[i]/U[i];      //△Qi/Vi
 	            for(int i=0; i<n_PQ; ++i) deltaU[i]=0;               //dU初值置0
 	            for(int i=0; i<n_PQ; i++) {
-	                for(int j=0; j<n_PQ; ++i) deltaU[i]+=-invBpp[i][j]*deltaQ[j];
+	                for(int j=0; j<n_PQ; ++j) deltaU[i]+=-invBpp[i][j]*deltaQ[j];
 	            }
 	            for(int i=0;i<n_PQ;i++) U[i]+=deltaU[i];      //修正Ui
 			}
 			
 		}
+//		System.out.println("U:");
+//		for (int i=0; i<n; ++i) {
+//			System.out.println(U[i] + " ");
+//		}
+//		System.out.println("F:");
+//		for (int i=0; i<n; ++i) {
+//			System.out.println(F[i] + " ");
+//		}
 	}
 	
 	public static void main(String[] args) {
-		double[][] Bp = {{-32.5,5,5,7.5},
-						 {5,-38.75,30,0},
-						 {5,30,-38.75,3.75},
-						 {7.5,0,3.75,-11.25}};
-		double[][] Bpp = {{-32.5,5,5,7.5},
-						 {5,-38.75,30,0},
-						 {5,30,-38.75,3.75},
-						 {7.5,0,3.75,-11.25}};
-		double[][] G = {{6.25,-5,-1.25,0,0},
-						{-5,10.834,-1.667,-1.667,-2.5},
-						{-1.25,-1.667,12.917,-10,0},
-						{0,-1.667,-10,12.917,-1.25},
-						{0,-2.5,0,-1.25,3.75}};
-		double[][] B = {{-18.75,15,3.75,0,0},
-						{15,-32.5,5,5,7.5},
-						{3.75,5,-38.75,30,0},
-						{0,5,30,-38.75,3.75},
-						{0,7.5,0,3.75,-11.25}};
+//		double[][] Bp = {{-32.5,5,5,7.5},
+//						 {5,-38.75,30,0},
+//						 {5,30,-38.75,3.75},
+//						 {7.5,0,3.75,-11.25}};
+//		double[][] Bpp = {{-32.5,5,5,7.5},
+//						 {5,-38.75,30,0},
+//						 {5,30,-38.75,3.75},
+//						 {7.5,0,3.75,-11.25}};
+//		double[][] G = {{6.25,-5,-1.25,0,0},
+//						{-5,10.834,-1.667,-1.667,-2.5},
+//						{-1.25,-1.667,12.917,-10,0},
+//						{0,-1.667,-10,12.917,-1.25},
+//						{0,-2.5,0,-1.25,3.75}};
+//		double[][] B = {{-18.75,15,3.75,0,0},
+//						{15,-32.5,5,5,7.5},
+//						{3.75,5,-38.75,30,0},
+//						{0,5,30,-38.75,3.75},
+//						{0,7.5,0,3.75,-11.25}};
+		ProcData2 pd2 = new ProcData2();
+		pd2.TestData();
+		PQiterating(24, 30, pd2.getYG(30), pd2.getYB(30), pd2.getPs(), pd2.getPl(), pd2.getQs(), pd2.getQl(), 0.000001);
 	}
 	
 }
