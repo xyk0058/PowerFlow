@@ -3,9 +3,11 @@ package com.dhcc.powerflow;
 import com.dhcc.util.MatrixUtil;
 
 public class PowerFlow {
-	public static void PQiterating(int n_PQ, int n_Bus, double[][] Bp, double[][] Bpp, double[][] G, double[][] B, double[] Ps, double[] PL,double[] Qs, double[] QL, double eps) {
+	
+	public static void PQiterating(int n_PQ, int n_Bus, double[][] G, double[][] B, double[] Ps, double[] PL,double[] Qs, double[] QL, double eps) {
 		int n = n_Bus;
-		
+		double[][] Bp = new double[n_PQ][n_PQ];
+		double[][] Bpp = new double[n][n];
 		double[] deltaP = new double[n];
 		double[] deltaQ = new double[n_PQ];
 		double[] U = new double[n];
@@ -19,6 +21,16 @@ public class PowerFlow {
 			U[i] = 1.0;
 			F[i] = 0.0;
 		}
+		
+		for (int i=0; i<n-1; ++i) {
+	        for (int j=0; j<n-1; ++j) {
+	            Bp[i][j] = B[i][j];
+	            if (i<n_PQ && j<n_PQ) {
+	                Bpp[i][j]=B[i][j];
+	            }
+	        }
+		}
+		
 		//求B'和B''矩阵的逆矩阵
 		invBp = MatrixUtil.Inverse(Bp);
 		invBpp = MatrixUtil.Inverse(Bpp);
@@ -89,4 +101,5 @@ public class PowerFlow {
 						{0,5,30,-38.75,3.75},
 						{0,7.5,0,3.75,-11.25}};
 	}
+	
 }

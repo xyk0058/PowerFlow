@@ -187,6 +187,7 @@ public class ProcData2 {
 				break;
 			}
 		}
+		
 		//阻抗参数
 		double[][] G = new double[N][N];
 		double[][] B = new double[N][N];
