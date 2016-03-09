@@ -1,4 +1,4 @@
-package com.dhcc.powerflow;
+ï»¿package com.dhcc.powerflow;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -79,22 +79,22 @@ public class ProcData2 {
 		double[][] m_bus = _mpc.getBus();
 		double[][] m_gen = _mpc.getGen();
 		int[] index = new int[N];
-		//½ÚµãµçÑ¹¸³³õÖµ£¬PV½ÚµãµçÑ¹·ùÖµÒÑÖª£¬Ïà½ÇÖÃ0£»
-		//Æ½ºâ½ÚµãµçÑ¹·ùÖµºÍÏà½Ç¾ùÒÑÖª£»
-		//PQ½ÚµãµçÑ¹·ùÖµÉè1£¬Ïà½ÇÉè0.
+		//èŠ‚ç‚¹ç”µå‹èµ‹åˆå€¼ï¼ŒPVèŠ‚ç‚¹ç”µå‹å¹…å€¼å·²çŸ¥ï¼Œç›¸è§’ç½®0ï¼›
+		//å¹³è¡¡èŠ‚ç‚¹ç”µå‹å¹…å€¼å’Œç›¸è§’å‡å·²çŸ¥ï¼›
+		//PQèŠ‚ç‚¹ç”µå‹å¹…å€¼è®¾1ï¼Œç›¸è§’è®¾0.
 		double[] Us = new double[2*N];
-		//¸÷½ÚµãÓĞ¹¦¸ººÉ¸³Öµ
+		//å„èŠ‚ç‚¹æœ‰åŠŸè´Ÿè·èµ‹å€¼
 		double[] Pl = new double[N-1];
-		//PV½Úµã·¢µç»úÓĞ¹¦¸³³õÖµ£¨³ıÆ½ºâ½ÚµãÍâ£©
+		//PVèŠ‚ç‚¹å‘ç”µæœºæœ‰åŠŸèµ‹åˆå€¼ï¼ˆé™¤å¹³è¡¡èŠ‚ç‚¹å¤–ï¼‰
 		double[] Ps = new double[N-1];
-		//·¢µç»úÎŞ¹¦³õÖµÖÃ0
+		//å‘ç”µæœºæ— åŠŸåˆå€¼ç½®0
 		double[] Qs = new double[N-1];
 
 		int _ref=N-1, _pq=0, _pv=N-2;
 		for (int i=0; i<N; ++i) {
 			if ((int)m_bus[i][1] == REF) {
 				if (_ref>N-1) {
-					System.out.println("½áµãÊäÈë´íÎó ProcData REF");
+					System.out.println("ç»“ç‚¹è¾“å…¥é”™è¯¯ ProcData REF");
 					break;
 				}
 				index[_ref] = (int)m_bus[i][0];
@@ -124,15 +124,15 @@ public class ProcData2 {
 				}
 				--_pv;		
 			}else {
-				System.out.println("½áµãÊäÈë´íÎó ProcData");
+				System.out.println("ç»“ç‚¹è¾“å…¥é”™è¯¯ ProcData");
 				break;
 			}
 			if (_pq > _pv){
-				System.out.println("½áµãÊäÈë´íÎó ProcData PQ PV");
+				System.out.println("ç»“ç‚¹è¾“å…¥é”™è¯¯ ProcData PQ PV");
 				break;
 			}
 		}
-		//×è¿¹²ÎÊı
+		//é˜»æŠ—å‚æ•°
 		double[][] G = new double[N][N];
 		double[][] B = new double[N][N];
 		double[][] B1 = new double[N-1][N-1];
