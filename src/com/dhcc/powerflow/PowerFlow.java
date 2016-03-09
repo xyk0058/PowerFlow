@@ -40,21 +40,20 @@ public class PowerFlow {
 		invBp = MatrixUtil.Inverse(Bp);
 		invBpp = MatrixUtil.Inverse(Bpp);
 		
-		
-		System.out.println("B");
 		NumberFormat nf = NumberFormat.getInstance();
-		nf.setMinimumFractionDigits(6);
-		nf.setMaximumFractionDigits(6);
-		for (int i=0; i<n_PQ; ++i) {
-			for(int j=0; j<n_PQ; ++j)
-				System.out.print(nf.format(invBpp[i][j]) + " ");
-			System.out.println();
-		}
+//		System.out.println("B");
+//		nf.setMinimumFractionDigits(6);
+//		nf.setMaximumFractionDigits(6);
+//		for (int i=0; i<n_PQ; ++i) {
+//			for(int j=0; j<n_PQ; ++j)
+//				System.out.print(nf.format(invBpp[i][j]) + " ");
+//			System.out.println();
+//		}
 
 		
 		double deltaPQU; 
 		int k = 0;
-		while (k < 100) {
+		while (true) {
 			k++;
 			for(int i=0; i<n-1; ++i)
 			{
@@ -135,9 +134,10 @@ public class PowerFlow {
 //						{0,5,30,-38.75,3.75},
 //						{0,7.5,0,3.75,-11.25}};
 		ProcData2 pd2 = new ProcData2();
-		pd2.TestData();
+		pd2.ReadData("/Users/xyk0058/Git/PowerFlow/src/com/dhcc/data/case14.txt");
+		pd2.ProcData();
 		int length = pd2.get_mpc().getBranch().length;
-		PQiterating(24, 30, pd2.getYG(length), pd2.getYB(length), pd2.getPs(), pd2.getPl(), pd2.getQs(), pd2.getQl(), pd2.getUs(), 0.00001);
+		PQiterating(pd2.get_pq(), pd2.get_mpc().getBus().length, pd2.getYG(length), pd2.getYB(length), pd2.getPs(), pd2.getPl(), pd2.getQs(), pd2.getQl(), pd2.getUs(), 0.00001);
 	}
 	
 }

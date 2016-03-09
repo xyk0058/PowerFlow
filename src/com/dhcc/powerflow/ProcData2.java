@@ -16,6 +16,7 @@ public class ProcData2 {
 	private int REF = 3;
 	private int PQ = 1;
 	private int PV =2;
+	private int _pq = 0;
 	
 	public MPC get_mpc() {
 		return _mpc;
@@ -37,11 +38,11 @@ public class ProcData2 {
 	private double[] Ql={0.012,0.016,0.000,0.109,0.000,0.020,0.075,0.016,0.025,0.018,
 			  0.058,0.009,0.034,0.007,0.112,0.000,0.016,0.067,0.000,0.023,
 			  0.000,0.000,0.009,0.019,0.127,0.190,0.300,0.000,0.000
-			}; 
+			};
 	
 	
-	public int getPQ() {
-		return PQ;
+	public int get_pq() {
+		return _pq;
 	}
 
 	public double[] getUs() {
@@ -284,7 +285,8 @@ public class ProcData2 {
 		//发电机无功初值置0
 		Qs = new double[N-1];
 
-		int _ref=N-1, _pq=0, _pv=N-2;
+		int _ref=N-1,  _pv=N-2;
+		_pq = 0;
 		for (int i=0; i<N; ++i) {
 			//System.out.println((int)m_bus[i][1]);
 			if ((int)m_bus[i][1] == REF) {
