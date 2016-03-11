@@ -8,6 +8,7 @@ public class PowerFlow {
 	
 	public static void PQiterating(int n_PQ, int n_Bus, double[][] G, double[][] B, 
 			double[] Ps, double[] PL,double[] Qs, double[] QL, double[] Us, int[] index, double eps) {
+		
 		int n = n_Bus;
 		double[][] Bp = new double[n-1][n-1];
 		double[][] Bpp = new double[n_PQ][n_PQ];
@@ -22,7 +23,7 @@ public class PowerFlow {
 		//初始化迭代参数
 		for (int i=0; i<n-1; ++i) {
 			U[i] = Us[2*i];
-			F[i] = Us[2*i+1];
+			F[i] = Us[2*i+1] * Math.PI / 180;
 		}
 		
 		for (int i=0; i<n-1; ++i) {
@@ -44,23 +45,39 @@ public class PowerFlow {
 		
 		NumberFormat nf = NumberFormat.getInstance();
 		//System.out.println(inv)
+		
 		System.out.println("Bp");
-		for (int i=0; i<invBp.length; ++i) {
-			for (int j=0; j<invBp.length; ++j) {
-				System.out.print(invBp[i][j] + "  ");
-			}
+		nf.setMinimumFractionDigits(6);
+		nf.setMaximumFractionDigits(6);
+		for (int i=0; i<n_PQ; ++i) {
+			for(int j=0; j<n_PQ; ++j)
+				System.out.print(Bp[i][j] + " ");
 			System.out.println();
 		}
-		
-		
-//		System.out.println("B");
-//		nf.setMinimumFractionDigits(6);
-//		nf.setMaximumFractionDigits(6);
-//		for (int i=0; i<n_PQ; ++i) {
-//			for(int j=0; j<n_PQ; ++j)
-//				System.out.print(nf.format(invBpp[i][j]) + " ");
-//			System.out.println();
-//		}
+		System.out.println("Bpp");
+		nf.setMinimumFractionDigits(6);
+		nf.setMaximumFractionDigits(6);
+		for (int i=0; i<n_PQ; ++i) {
+			for(int j=0; j<n_PQ; ++j)
+				System.out.print(nf.format(Bpp[i][j]) + " ");
+			System.out.println();
+		}
+		System.out.println("invBp");
+		nf.setMinimumFractionDigits(6);
+		nf.setMaximumFractionDigits(6);
+		for (int i=0; i<n_PQ; ++i) {
+			for(int j=0; j<n_PQ; ++j)
+				System.out.print(nf.format(invBp[i][j]) + " ");
+			System.out.println();
+		}
+		System.out.println("invBpp");
+		nf.setMinimumFractionDigits(6);
+		nf.setMaximumFractionDigits(6);
+		for (int i=0; i<n_PQ; ++i) {
+			for(int j=0; j<n_PQ; ++j)
+				System.out.print(nf.format(invBpp[i][j]) + " ");
+			System.out.println();
+		}
 
 		
 		double deltaPQU; 
@@ -85,6 +102,11 @@ public class PowerFlow {
 //					deltaQ[i] = QL[i] - U[i] * tmp2;
 				}
 			}
+			
+//			System.out.println("deltaP:");
+//			for (int i=0;i<n_PQ;i++)System.out.print(deltaP[i] + " ");
+//			System.out.println();
+			
 			deltaPQU = 0;
 			for (int i=0; i<n-1; ++i) {
 				deltaPQU = Math.max(Math.abs(deltaP[i]), deltaPQU);
@@ -113,13 +135,15 @@ public class PowerFlow {
 	                }
 	            }
 	            for (int i=0;i<n_PQ;i++) U[i]+=deltaU[i];      //修正Ui
-	            System.out.println("\r\n" + k + "U:");
-	            for (int i=0; i<n-1; ++i) System.out.print(deltaU[i] + " ");
-	            System.out.println();
-	    		for (int i=0; i<n; ++i) {
-	    			System.out.print(nf.format(U[i]) + "    ");
-	    		}
-	    		System.out.println();
+	            
+	            
+//	            System.out.println("\r\n" + k + "U:");
+//	            for (int i=0; i<n-1; ++i) System.out.print(deltaU[i] + " ");
+//	            System.out.println();
+//	    		for (int i=0; i<n; ++i) {
+//	    			System.out.print(nf.format(U[i]) + "    ");
+//	    		}
+//	    		System.out.println();
 			}
 		}
 
@@ -155,7 +179,7 @@ public class PowerFlow {
 //						{0,5,30,-38.75,3.75},
 //						{0,7.5,0,3.75,-11.25}};
 		ProcData2 pd2 = new ProcData2();
-		pd2.ReadData("/Users/xyk0058/Git/PowerFlow/src/com/dhcc/data/case30.txt");
+		pd2.ReadData("/Users/xyk0058/Git/PowerFlow/src/com/dhcc/data/case14.txt");
 		pd2.ProcData();
 		int length = pd2.get_mpc().getBranch().length;
 		PQiterating(pd2.get_pq(), pd2.get_mpc().getBus().length, 

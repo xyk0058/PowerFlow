@@ -338,30 +338,30 @@ public class ProcData2 {
 				++_pv;	
 			}
 		}
-		System.out.println("Test lanlan US: " +Us.length);
-		for (int i=0; i<Us.length; ++i){
-				System.out.print(Us[i]+" ");
-		}
-		System.out.println("\nTest lanlan PL: " +Pl.length);
-		for (int i=0; i<Pl.length; ++i){
-				System.out.print(Pl[i]+" ");
-		}
-		System.out.println("\nTest lanlan QL: " +Ql.length);
-		for (int i=0; i<Ql.length; ++i){
-				System.out.print(Ql[i]+" ");
-		}
-		System.out.println("\nTest lanlan PS: " +Ps.length);
-		for (int i=0; i<Ps.length; ++i){
-				System.out.print(Ps[i]+" ");
-		}
-		System.out.println("\nTest lanlan QS: " +Qs.length);
-		for (int i=0; i<Qs.length; ++i){
-				System.out.print(Qs[i]+" ");
-		}
-		System.out.println("\nTest lanlan index: " +index.length);
-		for (int i=0; i<index.length; ++i){
-				System.out.print(index[i]+" ");
-		}
+//		System.out.println("Test lanlan US: " +Us.length);
+//		for (int i=0; i<Us.length; ++i){
+//				System.out.print(Us[i]+" ");
+//		}
+//		System.out.println("\nTest lanlan PL: " +Pl.length);
+//		for (int i=0; i<Pl.length; ++i){
+//				System.out.print(Pl[i]+" ");
+//		}
+//		System.out.println("\nTest lanlan QL: " +Ql.length);
+//		for (int i=0; i<Ql.length; ++i){
+//				System.out.print(Ql[i]+" ");
+//		}
+//		System.out.println("\nTest lanlan PS: " +Ps.length);
+//		for (int i=0; i<Ps.length; ++i){
+//				System.out.print(Ps[i]+" ");
+//		}
+//		System.out.println("\nTest lanlan QS: " +Qs.length);
+//		for (int i=0; i<Qs.length; ++i){
+//				System.out.print(Qs[i]+" ");
+//		}
+//		System.out.println("\nTest lanlan index: " +index.length);
+//		for (int i=0; i<index.length; ++i){
+//				System.out.print(index[i]+" ");
+//		}
 		//阻抗参数
 		//double[][] G = new double[N][N];
 		//double[][] B = new double[N][N];
