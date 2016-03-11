@@ -17,6 +17,11 @@ public class ProcData2 {
 	private int PQ = 1;
 	private int PV =2;
 	private int _pq = 0;
+	private int[] index = null;
+	
+	public int[] getIndex() {
+		return index;
+	}
 	
 	public MPC get_mpc() {
 		return _mpc;
@@ -217,7 +222,7 @@ public class ProcData2 {
 	            G[(int) branch[i][1]][(int) branch[i][1]] += branch[i][2]/Z2;
 	        }
 		}
-		 
+		
 		return G;
 	}
 	
@@ -271,7 +276,7 @@ public class ProcData2 {
 //			System.out.println();
 //		}
 		
-		int[] index = new int[N];
+		index = new int[N];
 		//节点电压赋初值，PV节点电压幅值已知，相角置0；
 		//平衡节点电压幅值和相角均已知；
 		//PQ节点电压幅值设1，相角设0.
@@ -284,6 +289,7 @@ public class ProcData2 {
 		Ps = new double[N-1];
 		//发电机无功初值置0
 		Qs = new double[N-1];
+		
 
 		int _ref=N-1,  _pv=N-2;
 		_pq = 0;
@@ -316,8 +322,8 @@ public class ProcData2 {
 				for (int j=0; j<Ngen; ++j) {
 					if ((int)m_bus[i][0] == (int)m_gen[j][0]) {
 						Ps[_pv] = m_gen[j][1];
-						//Qs[_pv] = m_gen[j][2];
-						Qs[_pv] = 0;
+						Qs[_pv] = m_gen[j][2];
+						//Qs[_pv] = 0;
 						break;
 					}
 				}
