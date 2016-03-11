@@ -313,7 +313,15 @@ public class ProcData2 {
 				Ps[_pq] = 0;
 				Qs[_pq] = 0;
 				++_pq;
-			}else if ((int)m_bus[i][1] == PV) {
+			}
+//			else {
+//				System.out.println("结点输入错误 ProcData");
+//				break;
+//			}
+		}
+		_pv=_pq;
+		for (int i=0; i<N; ++i) {
+			if ((int)m_bus[i][1] == PV) {
 				index[_pv] = (int)m_bus[i][0];
 				Us[2*_pv] = m_bus[i][7];
 				Us[2*_pv+1] = 0;
@@ -327,40 +335,33 @@ public class ProcData2 {
 						break;
 					}
 				}
-				--_pv;		
-			}else {
-				System.out.println("结点输入错误 ProcData");
-				break;
-			}
-			if (_pq > _pv+1){
-				System.out.println("结点输入错误 ProcData PQ " +_pq + "PV "+_pv);
-				break;
+				++_pv;	
 			}
 		}
-//		System.out.println("Test lanlan US: " +Us.length);
-//		for (int i=0; i<Us.length; ++i){
-//				System.out.print(Us[i]+" ");
-//		}
-//		System.out.println("\nTest lanlan PL: " +Pl.length);
-//		for (int i=0; i<Pl.length; ++i){
-//				System.out.print(Pl[i]+" ");
-//		}
-//		System.out.println("\nTest lanlan QL: " +Ql.length);
-//		for (int i=0; i<Ql.length; ++i){
-//				System.out.print(Ql[i]+" ");
-//		}
-//		System.out.println("\nTest lanlan PS: " +Ps.length);
-//		for (int i=0; i<Ps.length; ++i){
-//				System.out.print(Ps[i]+" ");
-//		}
-//		System.out.println("\nTest lanlan QS: " +Qs.length);
-//		for (int i=0; i<Qs.length; ++i){
-//				System.out.print(Qs[i]+" ");
-//		}
-//		System.out.println("\nTest lanlan index: " +index.length);
-//		for (int i=0; i<index.length; ++i){
-//				System.out.print(index[i]+" ");
-//		}
+		System.out.println("Test lanlan US: " +Us.length);
+		for (int i=0; i<Us.length; ++i){
+				System.out.print(Us[i]+" ");
+		}
+		System.out.println("\nTest lanlan PL: " +Pl.length);
+		for (int i=0; i<Pl.length; ++i){
+				System.out.print(Pl[i]+" ");
+		}
+		System.out.println("\nTest lanlan QL: " +Ql.length);
+		for (int i=0; i<Ql.length; ++i){
+				System.out.print(Ql[i]+" ");
+		}
+		System.out.println("\nTest lanlan PS: " +Ps.length);
+		for (int i=0; i<Ps.length; ++i){
+				System.out.print(Ps[i]+" ");
+		}
+		System.out.println("\nTest lanlan QS: " +Qs.length);
+		for (int i=0; i<Qs.length; ++i){
+				System.out.print(Qs[i]+" ");
+		}
+		System.out.println("\nTest lanlan index: " +index.length);
+		for (int i=0; i<index.length; ++i){
+				System.out.print(index[i]+" ");
+		}
 		//阻抗参数
 		//double[][] G = new double[N][N];
 		//double[][] B = new double[N][N];
