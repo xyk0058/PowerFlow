@@ -40,4 +40,27 @@ public class MatrixUtil {
 		return invB;
 	}
 	
+	public static double[] Multi(double[] A, double[][] B) {
+		int N = A.length;
+		double[] C = new double[N];
+		for (int i = 0; i < N; ++i) {
+			C[i] = 0;
+			for (int j = 0; j < N; ++j) {
+				C[i] += A[j] * B[i][j];
+			}
+		}
+		return C;
+	}
+	
+	public static void main(String[] args) {
+		double[] A = {1,2,3};
+		double[][] B = {{1,2,3},
+						{1,2,3},
+						{1,2,3}};
+		double[] C = Multi(A,B);
+		for (int i = 0; i < C.length; ++i) {
+			System.out.println(C[i]);
+		}
+	}
+	
 }
