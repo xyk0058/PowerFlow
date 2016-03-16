@@ -207,6 +207,7 @@ public class ProcData2 {
 				G[i][j] = 0;
 			}
 		}
+		
 		double[][] branch = _mpc.getBranch();
 		for (int i=0; i<n_Bus; ++i) {
 			if(branch[i][0] != branch[i][1])      //左节点号与右节点号不同
