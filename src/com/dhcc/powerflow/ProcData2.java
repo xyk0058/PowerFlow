@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
+import java.util.Collections;
 
 import com.dhcc.model.MPC;
 
@@ -209,18 +211,24 @@ public class ProcData2 {
 		}
 		
 		double[][] branch = _mpc.getBranch();
-		for (int i=0; i<n_Bus; ++i) {
-			if(branch[i][0] != branch[i][1])      //左节点号与右节点号不同
+		for (int i=0; i<branch.length; ++i) {
+			int from = (int) branch[i][0] - 1;
+			int to = (int) branch[i][1] - 1;
+			double R = branch[i][2];
+			double X = branch[i][3];
+			double b = branch[i][4];
+            double Z2 = R * R + X * X;   //阻抗的平方
+            double K = branch[i][8];
+
+			if (K == 0)
 	        {
-	            double Z2 = (branch[i][2])*(branch[i][2])+(branch[i][3])*(branch[i][3]);   //阻抗的平方
-	            //System.out.println("Z2" + Z2);
 	            //串联阻抗等效导纳值
 	            //非对角元素
-	            G[(int) branch[i][0]][(int) branch[i][1]] = (-branch[i][2])/Z2;
-	            G[(int) branch[i][1]][(int) branch[i][0]] = (-branch[i][2])/Z2;
+	            G[from][to] = - R / Z2;
+	            G[to][from] = - R / Z2;
 	            //对角元素
-	            G[(int) branch[i][0]][(int) branch[i][0]] += branch[i][2]/Z2;
-	            G[(int) branch[i][1]][(int) branch[i][1]] += branch[i][2]/Z2;
+	            G[from][from] += R / Z2;
+	            G[to][to] += R / Z2;
 	        }
 		}
 		
@@ -236,26 +244,58 @@ public class ProcData2 {
 		}
 		
 		double[][] branch = _mpc.getBranch();
-		for (int i=0; i<n_Bus; ++i) {
-			if(branch[i][0] != branch[i][1])      //左节点号与右节点号不同
-	        {
-	            double Z2 = (branch[i][2])*(branch[i][2])+(branch[i][3])*(branch[i][3]);   //阻抗的平方
-	            //System.out.println("Z2:" + Z2);
-	            //串联阻抗等效导纳值
-	            //非对角元素
-	            B[(int) branch[i][0]][(int) branch[i][1]] = branch[i][3]/Z2;
-	            B[(int) branch[i][1]][(int) branch[i][0]] = branch[i][3]/Z2;
-	            //对角元素
-	            B[(int) branch[i][0]][(int) branch[i][0]] += (-branch[i][3]/Z2);
-	            B[(int) branch[i][1]][(int) branch[i][1]] += (-branch[i][3]/Z2);
-	            //节点自导纳需加上充电导纳值
-	            B[(int) branch[i][0]][(int) branch[i][0]] += branch[i][4]/2.0;
-	            B[(int) branch[i][1]][(int) branch[i][1]] += branch[i][4]/2.0;
-	        }
-	        else           //左节点号=右节点号，即节点有并联阻抗的情况
-	        {
-	            B[(int) branch[i][0]][(int) branch[i][0]] += branch[i][3];
-	        }
+		for (int n=0; n<branch.length; ++n) {
+			int i = (int) branch[n][0] - 1;
+			int j = (int) branch[n][1] - 1;
+			double R = branch[n][2];
+			double X = branch[n][3];
+			double b = branch[n][4];
+            double Z2 = R * R + X * X;   //阻抗的平方
+            double K = branch[n][8];
+            for (int k=0; k<n_Bus; ++k) {
+    			i = branch[k].getFrom();
+    			j = branch[k].getTo();
+    			r = branch[k].getR();
+    			x = branch[k].getX();
+    			b = r*r + x*x;
+    			r = r/b;
+    			x = -x/b;
+    			if (i==j) {
+    				G[i][j] += r;
+    				B[i][j] += x;
+    				continue;
+    			}
+    			b = branch[k].getY0();
+    			G[i][j] = G[i][j] - r;
+    			B[i][j] = B[i][j] - x;
+    			G[j][i] = G[i][j];
+    			B[j][i] = B[i][j];
+    			
+    			G[i][i] = G[i][i] + r;
+    			B[i][i] = B[i][i] + x + b/2;
+    			G[j][j] = G[j][j] + r;
+    			B[j][j] = B[j][j] + x + b/2;
+    		}
+    		//变压器数据
+    		for (int k=0; k<info.getNt(); ++k) {
+    			i = tran[k].getFrom();
+    			j = tran[k].getTo();
+    			r = tran[k].getR();
+    			x = tran[k].getX();
+    			b = r*r + x*x;
+    			r = r/b;
+    			x = -x/b;
+    			kt = tran[k].getK();
+    			G[i][i] = G[i][i] + r;
+    			B[i][i] = B[i][i] + x;
+    			G[i][j] = G[i][j] - r/kt;
+    			B[i][j] = B[i][j] - x/kt;
+    			G[j][i] = G[j][i];
+    			B[j][i] = B[j][i];
+    			r = r/kt/kt;x = x/kt/kt;
+    			G[j][j] += r;
+    			B[j][j] += x;
+    		}
 		}
 //		System.out.println("B:");
 //		for (int i=0; i<n_Bus; ++i) {
@@ -309,8 +349,8 @@ public class ProcData2 {
 				index[_pq] = (int)m_bus[i][0];
 				Us[2*_pq] = 1;
 				Us[2*_pq+1] = 0;
-				Pl[_pq] = m_bus[i][2];
-				Ql[_pq] = m_bus[i][3];
+				Pl[_pq] = m_bus[i][2] / 100;
+				Ql[_pq] = m_bus[i][3] / 100;
 				Ps[_pq] = 0;
 				Qs[_pq] = 0;
 				++_pq;
@@ -375,7 +415,7 @@ public class ProcData2 {
 	public static void main(String[] args) {
 		ProcData2 pd2 = new ProcData2();
 		//pd2.ReadData("/Users/xyk0058/Git/PowerFlow/src/com/dhcc/data/case14.txt");
-		pd2.ReadData("D:/PowerFlow/src/com/dhcc/data/case14.txt");
+		pd2.ReadData("/Users/xyk0058/Git/PowerFlow_Version1.0/src/com/dhcc/data/case14.txt");
 		pd2.ProcData();
 	}
 	

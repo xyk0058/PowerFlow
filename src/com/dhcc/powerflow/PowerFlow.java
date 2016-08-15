@@ -46,6 +46,15 @@ public class PowerFlow {
 		NumberFormat nf = NumberFormat.getInstance();
 		//System.out.println(inv)
 		
+		System.out.println("B");
+		nf.setMinimumFractionDigits(6);
+		nf.setMaximumFractionDigits(6);
+		for (int i=0; i<n; ++i) {
+			for(int j=0; j<n; ++j)
+				System.out.print(B[i][j] + " ");
+			System.out.println();
+		}
+		
 		System.out.println("Bp");
 		nf.setMinimumFractionDigits(6);
 		nf.setMaximumFractionDigits(6);
@@ -137,13 +146,13 @@ public class PowerFlow {
 	            for (int i=0;i<n_PQ;i++) U[i]+=deltaU[i];      //修正Ui
 	            
 	            
-//	            System.out.println("\r\n" + k + "U:");
-//	            for (int i=0; i<n-1; ++i) System.out.print(deltaU[i] + " ");
-//	            System.out.println();
-//	    		for (int i=0; i<n; ++i) {
-//	    			System.out.print(nf.format(U[i]) + "    ");
-//	    		}
-//	    		System.out.println();
+	            System.out.println("\r\n" + k + "U:");
+	            for (int i=0; i<n-1; ++i) System.out.print(deltaU[i] + " ");
+	            System.out.println();
+	    		for (int i=0; i<n; ++i) {
+	    			System.out.print(nf.format(U[i]) + "    ");
+	    		}
+	    		System.out.println();
 			}
 		}
 
@@ -179,13 +188,13 @@ public class PowerFlow {
 //						{0,5,30,-38.75,3.75},
 //						{0,7.5,0,3.75,-11.25}};
 		ProcData2 pd2 = new ProcData2();
-		pd2.ReadData("/Users/xyk0058/Git/PowerFlow/src/com/dhcc/data/case14.txt");
+		pd2.ReadData("/Users/xyk0058/Git/PowerFlow_Version1.0/src/com/dhcc/data/case14.txt");
 		pd2.ProcData();
 		int length = pd2.get_mpc().getBranch().length;
-		PQiterating(pd2.get_pq(), pd2.get_mpc().getBus().length, 
+		PQiterating(pd2.get_pq(), pd2.get_mpc().getBus().length,
 				pd2.getYG(length), pd2.getYB(length), pd2.getPs(), 
 				pd2.getPl(), pd2.getQs(), pd2.getQl(), pd2.getUs(), 
-				pd2.getIndex(), 0.00001);
+				pd2.getIndex(), 0.1);
 	}
 	
 }
