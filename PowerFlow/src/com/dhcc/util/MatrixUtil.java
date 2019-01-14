@@ -2,7 +2,7 @@ package com.dhcc.util;
 
 public class MatrixUtil {
 	
-	//æ±‚é€†çŸ©é˜µ
+	//ÇóÄæ¾ØÕó
 	public static double[][] Inverse(double[][] B) {
 		int n = B.length;
 		double[][] invB = new double[n][n];
